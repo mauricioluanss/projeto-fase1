@@ -1,0 +1,50 @@
+[MASTER]
+# Mantém a mesma configuração, ignorando pastas irrelevantes.
+ignore=venv,.venv,__pycache__,.pytest_cache,.vscode,.idea
+
+[MESSAGES CONTROL]
+# Aqui está a maior mudança. Reativamos as verificações importantes.
+disable=
+    # Desabilitamos apenas o C0114 (missing-module-docstring), que pode ser excessivo para scripts simples.
+    # Mas mantemos a exigência para classes e funções.
+    C0114,
+    # Desabilitamos o R0903 (too-few-public-methods) pois classes de dados ou exceções customizadas são válidas.
+    R0903
+
+[FORMAT]
+# Ajustamos o comprimento da linha para o padrão do Black Formatter.
+max-line-length=88
+indent-string='    '
+
+[VARIABLES]
+# Ignora o aviso de 'variável não utilizada' para variáveis chamadas '_'.
+# É uma convenção em Python para indicar que a variável é intencionalmente ignorada.
+dummy-variables-rgx=_+$|dummy*
+
+# Permite nomes curtos comuns em laços (loops).
+good-names=i,j,k,ex,fp
+
+[SIMILARITIES]
+# A mesma regra, mas garantindo que não compare docstrings.
+min-similarity-lines=4
+ignore-docstrings=yes
+
+[DESIGN]
+# Mantemos as suas regras de complexidade, são ótimas.
+# Apenas diminuímos o número de atributos para forçar classes mais coesas.
+max-args=5
+max-locals=15
+max-returns=6
+max-branches=12
+max-statements=50
+max-parents=7
+max-attributes=7  # Reduzido de 10 para 7
+min-public-methods=0
+
+[EXCEPTIONS]
+# Mantém a excelente regra de não usar exceções muito genéricas.
+overgeneral-exceptions=Exception
+
+[REPORTS]
+output-format=colorized
+reports=no
