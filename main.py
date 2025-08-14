@@ -1,35 +1,72 @@
-# Enunciado da fase 1
-# Implemente um programa que leia, valide e analise dados informados pelo usuário. Os dados são meteorológicos e referem-se aos dados de 2021 (de janeiro a dezembro) registrados em uma cidade.
-# Toda entrada de dados deve ser validada. No caso de valor inválido, informe ao usuário o erro e permita que ele redigite o dado.
+# Constante com os nomes do meses para usar como refeência no laço principal.
+MESES = [
+    "Janeiro",
+    "Fevereiro",
+    "Março",
+    "Abril",
+    "Maio",
+    "Junho",
+    "Julho",
+    "Agosto",
+    "Setembro",
+    "Outubro",
+    "Novembro",
+    "Dezembro",
+]
 
-# Seu programa deve coletar os seguintes dados:
-
-# • Mês: use valor numérico de 1 a 12 (janeiro a dezembro) para se referir aos meses do ano.
-
-# Para cada mês do ano, informe:
-# • Temperatura máxima do mês: devem estar em Celsius, garanta que estejam dentro de um intervalo válido para temperaturas, tal como: -60 graus à +50 graus.
-
-# A seguir, seu programa deve calcular e exibir:
-# • Temperatura média máxima anual: exibe a média das temperaturas máximas informadas.
-# • Quantidade de meses escaldantes: quantidade de meses com temperaturas máximas acima de 33 graus Celsius.
-# • Mês mais escaldante do ano: mês que registrou a maior temperatura máxima dentre todos os informados. O mês deve ser escrito na tela por extenso (janeiro a dezembro).
-# • Mês menos quente do ano: mês que registrou a menor temperatura máxima dentre todos os informados. O mês deve ser escrito na tela por extenso (janeiro a dezembro).
-
-# Antes de enviar, teste o seu programa com os seguintes dados:
-import string
-import math
-import random
-
-mes = 0
-temp_max_mes = 0
-
-for cont in range(1, 13):
-    mes = int(input("Digite o mês: "))
-    if mes in range(1, 13):
-        temp_max_mes = float(input(f"Digite a temperatura do mês {mes}: "))
-
-
-temp_media_max_anual = 0
+# Variaveis de escopo global (vaolres vão mudar no decorrer do script)
 qtd_meses_escaldantes = 0
-mes_mais_escaldante = 0
-mes_menos_escaldante = 0
+maior_temp_max = None
+menor_temp_max = None
+mes_mais_escaldante = ""
+mes_menos_quente = ""
+soma_temp_max = 0
+
+# Loop principal. Ele solicita a temperatura de cada mês, valida a entrada,
+# e todas as verificações.
+for mes in MESES:
+    while True:
+        try:
+            temp_max = float(input(f"Informe a temperatura máxima de {mes}: "))
+
+            if temp_max < -60 or temp_max > 50:
+                print("A temperatura deve estar entre -60°C e 50°C.")
+            else:
+                soma_temp_max += temp_max
+
+                # armazena a qtd de meses escaldantes
+                if temp_max > 33:
+                    qtd_meses_escaldantes += 1
+
+                # captura a temperatura e mês mais escaldante
+                if maior_temp_max is None or temp_max > maior_temp_max:
+                    maior_temp_max = temp_max
+                    mes_mais_escaldante = mes
+
+                # captura temperatura e mês menos quente
+                if menor_temp_max is None or temp_max < menor_temp_max:
+                    menor_temp_max = temp_max
+                    mes_menos_quente = mes
+
+                break
+
+        except ValueError:
+            print("Entrada inválida... Tu precisa informar um número.")
+
+
+# Parte final que informa os dados pro usuário
+print("\nRELATÓRIO METEOROLÓGICO ANUAL")
+print(f"Temperatura média máxima anual: {soma_temp_max / len(MESES):.1f}°C")
+
+if qtd_meses_escaldantes < 1:
+    quente_escaldante = "quente"
+    print("Não houveram meses escaldantes no ano.")
+else:
+    quente_escaldante = "escaldante"
+    print(f"Quantidade de meses escaldantes no ano: {qtd_meses_escaldantes}")
+
+print(
+    f"Mês mais {quente_escaldante} do ano: {mes_mais_escaldante} {maior_temp_max:.1f}°C"
+)
+print(f"Mês menos quente do ano: {mes_menos_quente} {menor_temp_max:.1f}°C")
+print("\n")
